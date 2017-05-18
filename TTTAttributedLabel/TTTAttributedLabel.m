@@ -112,12 +112,7 @@ static inline NSDictionary * NSAttributedStringAttributesFromLabel(TTTAttributed
     paragraphStyle.maximumLineHeight = label.maximumLineHeight > 0 ? label.maximumLineHeight : label.font.lineHeight * label.lineHeightMultiple;
     paragraphStyle.lineHeightMultiple = label.lineHeightMultiple;
     paragraphStyle.firstLineHeadIndent = label.firstLineIndent;
-
-    if (label.numberOfLines == 1) {
-        paragraphStyle.lineBreakMode = label.lineBreakMode;
-    } else {
-        paragraphStyle.lineBreakMode = NSLineBreakByWordWrapping;
-    }
+    paragraphStyle.lineBreakMode = NSLineBreakByWordWrapping;
 
     [mutableAttributes setObject:paragraphStyle forKey:(NSString *)kCTParagraphStyleAttributeName];
 
@@ -174,10 +169,7 @@ static inline CGSize CTFramesetterSuggestFrameSizeForAttributedStringWithConstra
     CFRange rangeToSize = CFRangeMake(0, (CFIndex)[attributedString length]);
     CGSize constraints = CGSizeMake(size.width, TTTFLOAT_MAX);
 
-    if (numberOfLines == 1) {
-        // If there is one line, the size that fits is the full width of the line
-        constraints = CGSizeMake(TTTFLOAT_MAX, TTTFLOAT_MAX);
-    } else if (numberOfLines > 0) {
+    if (numberOfLines > 0) {
         // If the line count of the label more than 1, limit the range to size to the number of lines that have been set
         CGMutablePathRef path = CGPathCreateMutable();
         CGPathAddRect(path, NULL, CGRectMake(0.0f, 0.0f, constraints.width, TTTFLOAT_MAX));
